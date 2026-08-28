@@ -1,0 +1,1 @@
+import {db} from "@/lib/db"; export async function GET(){return Response.json(await db.store.findMany({include:{users:{select:{id:true,name:true,username:true,active:true}}},orderBy:{code:"asc"}}));}

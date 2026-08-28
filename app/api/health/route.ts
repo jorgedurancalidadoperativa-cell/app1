@@ -1,0 +1,1 @@
+export async function GET(){return Response.json({ok:true,app:"POS Inventario V3",timestamp:new Date().toISOString()});}

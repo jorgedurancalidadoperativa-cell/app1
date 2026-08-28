@@ -1,0 +1,3 @@
+import {db} from "@/lib/db"; import {z} from "zod";
+const S=z.object({productId:z.string(),quantity:z.number().positive(),userId:z.string(),type:z.enum(["ENTRY","POSITIVE_ADJUSTMENT","NEGATIVE_ADJUSTMENT","RETURN"]),reason:z.string().optional(),reference:z.string().optional()});
+export async function POST(req:Request){const b=S.parse(await req.json());const out=await db.$transaction(async tx=>{const delta=b.type==="NEGATIVE_ADJUSTMENT"?-b.quantity:b.quantity;const p=await tx.product.update({where:{id:b.productId},data:{stock:{increment:delta}}});await tx.inventoryMovement.create({data:{productId:b.productId,quantity:b.quantity,type:b.type,userId:b.userId,reason:b.reason,reference:b.reference}});return p});return Response.json(out)}
