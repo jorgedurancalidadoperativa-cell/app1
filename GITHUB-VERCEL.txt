@@ -1,0 +1,28 @@
+POS + INVENTARIO PROFESIONAL
+
+IMPORTANTE: ESTE PROYECTO ES INDEPENDIENTE DE J D O SERVICES.
+
+ESTRUCTURA CORRECTA
+La carpeta app DEBE quedar en la RAIZ del repositorio:
+
+app/
+components/
+lib/
+prisma/
+package.json
+next.config.mjs
+vercel.json
+
+NO subas los archivos page.tsx uno por uno a la raiz de GitHub.
+NO renombres page.tsx a page (1).tsx, page (2).tsx, etc.
+
+RECOMENDADO
+1. Extrae este ZIP en una carpeta nueva.
+2. Abre esa carpeta completa en VS Code o GitHub Desktop.
+3. Crea/conecta un repositorio nuevo.
+4. Haz commit y push conservando todas las carpetas.
+5. En Vercel importa ese repositorio.
+6. Vercel debe detectar Next.js automáticamente.
+
+ANTES DE DESPLEGAR
+Configura en Vercel las variables de entorno indicadas en .env.example.
