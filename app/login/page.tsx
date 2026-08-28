@@ -1,14 +1,2 @@
- "use client";
-import {useRouter} from "next/navigation";
-import {useState} from "react";
-export default function Login(){
-  const router=useRouter(); const [username,setUsername]=useState("admin"); const [password,setPassword]=useState("admin123");
-  const submit=(e:React.FormEvent)=>{e.preventDefault(); if(username && password) router.push("/dashboard");};
-  return <div className="loginWrap"><form className="loginCard formGrid" onSubmit={submit}>
-    <div><h1>POS Inventario</h1><p className="muted">Acceso al sistema</p></div>
-    <div className="field"><label className="label">Usuario</label><input className="input" value={username} onChange={e=>setUsername(e.target.value)}/></div>
-    <div className="field"><label className="label">Contraseña</label><input className="input" type="password" value={password} onChange={e=>setPassword(e.target.value)}/></div>
-    <button className="btn btnPrimary" type="submit">Iniciar sesión</button>
-    <small className="muted">Demo inicial: admin / admin123</small>
-  </form></div>;
-}
+"use client";import {useRouter} from "next/navigation";import {useState} from "react";
+export default function Login(){const r=useRouter();const [u,setU]=useState("admin"),[p,setP]=useState("admin123"),[error,setError]=useState("");function submit(e:React.FormEvent){e.preventDefault();if((u==="admin"&&p==="admin123")||(u==="caja1"&&p==="caja123")){localStorage.setItem("pos_session",JSON.stringify({username:u,role:u==="admin"?"ADMIN":"CASHIER"}));r.push("/dashboard")}else setError("Usuario o contraseña incorrectos")};return <div className="loginWrap"><form className="loginCard formGrid" onSubmit={submit}><div><h1>POS Inventario</h1><p className="muted">Acceso al sistema</p></div><div className="field"><label className="label">Usuario</label><input className="input" value={u} onChange={e=>setU(e.target.value)}/></div><div className="field"><label className="label">Contraseña</label><input className="input" type="password" value={p} onChange={e=>setP(e.target.value)}/></div>{error&&<span className="badge danger">{error}</span>}<button className="btn btnPrimary" type="submit">Iniciar sesión</button><small className="muted">Demo: admin / admin123 · caja1 / caja123</small></form></div>}

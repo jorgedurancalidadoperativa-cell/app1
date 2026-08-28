@@ -1,42 +1,6 @@
- "use client";
-import Link from "next/link";
-import {usePathname} from "next/navigation";
-import {LayoutDashboard, ShoppingCart, ReceiptText, Package, Boxes, Truck, BarChart3, Users, Settings, LogOut, Menu, X} from "lucide-react";
-import {useState} from "react";
-
-const items = [
-  ["/dashboard","Dashboard",LayoutDashboard],
-  ["/pos","Punto de Venta",ShoppingCart],
-  ["/ventas","Ventas",ReceiptText],
-  ["/productos","Productos",Package],
-  ["/inventario","Inventario",Boxes],
-  ["/entradas","Entradas de Mercancía",Truck],
-  ["/proveedores","Proveedores",Truck],
-  ["/reportes","Reportes",BarChart3],
-  ["/usuarios","Usuarios",Users],
-  ["/configuracion","Configuración",Settings],
+"use client";
+import Link from "next/link";import {usePathname,useRouter} from "next/navigation";import {LayoutDashboard,ShoppingCart,ReceiptText,Package,Boxes,Truck,BarChart3,Users,Settings,LogOut,Menu,X} from "lucide-react";import {useState} from "react";
+const items=[
+ ["/dashboard","Dashboard",LayoutDashboard],["/pos","Punto de Venta",ShoppingCart],["/ventas","Ventas",ReceiptText],["/productos","Productos",Package],["/inventario","Inventario",Boxes],["/entradas","Entradas de Mercancía",Truck],["/proveedores","Proveedores",Truck],["/reportes","Reportes",BarChart3],["/usuarios","Usuarios",Users],["/configuracion","Configuración",Settings]
 ] as const;
-
-export default function AppShell({children}:{children:React.ReactNode}){
-  const pathname=usePathname();
-  const [open,setOpen]=useState(false);
-  return <div className="shell">
-    <aside className={`sidebar ${open?"open":""}`}>
-      <div className="brand">POS INVENTARIO</div>
-      <nav className="nav">
-        {items.map(([href,label,Icon])=><Link key={href} href={href} className={pathname===href?"active":""} onClick={()=>setOpen(false)}><Icon size={18}/>{label}</Link>)}
-        <Link href="/login"><LogOut size={18}/>Cerrar sesión</Link>
-      </nav>
-    </aside>
-    <section className="main">
-      <div className="topbar">
-        <button className="btn btnGhost" onClick={()=>setOpen(!open)} aria-label="Menú"><>{open?<X size={20}/>:<Menu size={20}/>}</></button>
-        <div style={{display:"flex",gap:12,alignItems:"center"}}>
-          <span className="badge ok">Sistema operativo</span>
-          <strong>Administrador</strong>
-        </div>
-      </div>
-      <main className="content">{children}</main>
-    </section>
-  </div>;
-}
+export default function AppShell({children}:{children:React.ReactNode}){const path=usePathname(),router=useRouter();const [open,setOpen]=useState(false);return <div className="shell"><aside className={`sidebar ${open?"open":""}`}><div className="brand">POS INVENTARIO</div><nav className="nav">{items.map(([href,label,Icon])=><Link key={href} href={href} className={path===href?"active":""} onClick={()=>setOpen(false)}><Icon size={18}/>{label}</Link>)}<button className="navButton" onClick={()=>{localStorage.removeItem("pos_session");router.push("/login")}}><LogOut size={18}/>Cerrar sesión</button></nav></aside><section className="main"><div className="topbar"><button className="btn btnGhost" onClick={()=>setOpen(!open)}>{open?<X size={20}/>:<Menu size={20}/>}</button><div className="topStatus"><span className="badge ok">Sistema operativo</span><strong>Administrador</strong></div></div><main className="content">{children}</main></section></div>}

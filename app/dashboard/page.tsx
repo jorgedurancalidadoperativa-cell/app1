@@ -1,23 +1,2 @@
-import AppShell from "@/components/AppShell";
-export default function Dashboard(){
- return <AppShell>
-  <div><h1 className="title">Dashboard</h1><p className="subtitle">Resumen operativo del negocio</p></div>
-  <div className="grid grid4" style={{marginTop:20}}>
-   {[
-    ["Ventas de hoy","$18,420.00","24 tickets","+12%"],
-    ["Esta semana","$96,850.00","128 tickets","+8%"],
-    ["Este mes","$384,210.00","534 ventas","+14%"],
-    ["Inventario","$612,780.00","1,248 productos","18 bajos"]
-   ].map(([a,b,c,d])=><div className="card" key={a}><div className="muted">{a}</div><div className="kpi">{b}</div><div style={{display:"flex",justifyContent:"space-between"}}><span className="muted">{c}</span><span className="badge ok">{d}</span></div></div>)}
-  </div>
-  <div className="grid grid2" style={{marginTop:18}}>
-   <div className="card"><h2>Ventas por día</h2><div className="chart">{[52,75,42,88,94,61,80].map((v,i)=><div key={i} style={{flex:1}}><div className="bar" style={{height:`${v}%`}}></div><div className="barLabel">{["L","M","M","J","V","S","D"][i]}</div></div>)}</div></div>
-   <div className="card"><h2>Productos más vendidos</h2>{["Coca Cola 600 ml","Agua 1 L","Pan Blanco","Leche 1 L","Papas 45 g"].map((x,i)=><div key={x} style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid var(--line)"}}><span>{i+1}. {x}</span><strong>{250-i*31} pzas</strong></div>)}</div>
-  </div>
-  <div className="grid grid3" style={{marginTop:18}}>
-   <div className="card"><div className="muted">Productos con stock bajo</div><div className="kpi">18</div><span className="badge warn">Revisar</span></div>
-   <div className="card"><div className="muted">Productos agotados</div><div className="kpi">6</div><span className="badge danger">Urgente</span></div>
-   <div className="card"><div className="muted">Ticket promedio</div><div className="kpi">$767.50</div><span className="badge ok">+5.2%</span></div>
-  </div>
- </AppShell>
-}
+"use client";import AppShell from "@/components/AppShell";import {useStore,money,todayKey} from "@/lib/store";
+export default function Dashboard(){const {products,sales}=useStore();const today=sales.filter(s=>s.date.slice(0,10)===todayKey()&&s.status==="COMPLETED");const total=today.reduce((a,s)=>a+s.total,0),items=today.reduce((a,s)=>a+s.items.reduce((b,i)=>b+i.quantity,0),0);const low=products.filter(p=>p.active&&p.stock>0&&p.stock<=p.minimumStock).length,empty=products.filter(p=>p.active&&p.stock<=0).length;const ranking=products.map(p=>({p,n:sales.filter(s=>s.status==="COMPLETED").flatMap(s=>s.items).filter(i=>i.productId===p.id).reduce((a,i)=>a+i.quantity,0)})).sort((a,b)=>b.n-a.n).slice(0,5);return <AppShell><h1 className="title">Dashboard</h1><p className="subtitle">Resumen operativo en tiempo real</p><div className="grid grid4" style={{marginTop:20}}>{[["Ventas de hoy",money(total),`${today.length} tickets`],["Productos vendidos",items.toString(),"hoy"],["Productos con stock bajo",low.toString(),"requieren atención"],["Productos agotados",empty.toString(),"urgente"]].map(x=><div className="card" key={x[0]}><div className="muted">{x[0]}</div><div className="kpi">{x[1]}</div><span className="muted">{x[2]}</span></div>)}</div><div className="grid grid2" style={{marginTop:18}}><div className="card"><h2>Ventas recientes</h2>{sales.slice(0,7).map(s=><div key={s.id} style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid var(--line)"}}><span>{s.ticketNumber}</span><strong>{money(s.total)}</strong></div>)}{sales.length===0&&<p className="muted">Aún no hay ventas.</p>}</div><div className="card"><h2>Más vendidos</h2>{ranking.map((x,i)=><div key={x.p.id} style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:"1px solid var(--line)"}}><span>{i+1}. {x.p.name}</span><strong>{x.n} pzas</strong></div>)}</div></div></AppShell>}

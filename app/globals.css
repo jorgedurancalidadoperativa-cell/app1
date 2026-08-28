@@ -63,3 +63,5 @@ th{background:#f8fafc;font-size:13px}
 .barLabel{font-size:11px;color:var(--muted);text-align:center;margin-top:5px}
 @media(max-width:1050px){.sidebar{width:220px}.grid4{grid-template-columns:repeat(2,1fr)}.productGrid{grid-template-columns:repeat(2,1fr)}.pos{grid-template-columns:1fr}}
 @media(max-width:760px){.sidebar{position:fixed;left:-100%;transition:.2s;z-index:20}.sidebar.open{left:0}.topbar{padding:0 14px}.content{padding:14px}.grid3,.grid2,.grid4{grid-template-columns:1fr}.productGrid{grid-template-columns:1fr}.cart{position:static}.title{font-size:23px}}
+.navButton{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:10px;color:#b9c3d0;background:transparent;border:0;width:100%;text-align:left}.navButton:hover{background:#1b2737;color:#fff}.topStatus{display:flex;gap:12px;align-items:center}
+.modal{position:fixed;inset:0;background:rgba(10,18,30,.55);display:grid;place-items:center;padding:20px;z-index:50}.modalCard{width:min(850px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;padding:22px}.btn:disabled{opacity:.5;cursor:not-allowed}
